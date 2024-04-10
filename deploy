@@ -1,5 +1,11 @@
 #!/bin/bash
 
-tar cvf - --no-xattrs index.js package.* node_modules | ssh root@65.21.144.226 'cd logger && rm -rf * && touch foo && ls -l && tar xvf -'
+source .env
+[ -f .env.local ] && source .env.local
 
-# scp -r index.js package.* node_modules root@65.21.144.226:logger/
+echo Deploying to $DEPLOY_TARGET
+
+tar cf - --no-xattrs index.js package.* node_modules > app.tar
+ls -l app.tar
+cat app.tar | ssh $DEPLOY_TARGET 'cd logger && rm -rf * && tar xf -'
+rm app.tar
