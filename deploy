@@ -1,0 +1,5 @@
+#!/bin/bash
+
+tar cvf - --no-xattrs index.js package.* node_modules | ssh root@65.21.144.226 'cd logger && rm -rf * && touch foo && ls -l && tar xvf -'
+
+# scp -r index.js package.* node_modules root@65.21.144.226:logger/
